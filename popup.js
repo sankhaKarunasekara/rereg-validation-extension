@@ -16,9 +16,10 @@ var vat_exp = "";
 var sms = "";
 
 chrome.runtime.onMessage.addListener(function ({
+	COMPANY_NAME,
+	TYPE,
 	VAT_NO,
 	TIN_NO,
-	COMPANY_NAME,
 	VAT_EXPIRY_DATE,
 	SMS }) {
 
@@ -27,6 +28,7 @@ chrome.runtime.onMessage.addListener(function ({
 	company = COMPANY_NAME;
 	vat_exp = VAT_EXPIRY_DATE;
 	sms = SMS;
+	type = TYPE;
 
 	fetch('IRD.json')
 		.then(response => response.json())
@@ -41,14 +43,13 @@ chrome.runtime.onMessage.addListener(function ({
 				// document.getElementById('VAT_NO').style.backgroundColor = 'red';
 			} else {
 				if ((last4digits == "7000") && (!isSuspended)) {
+					document.getElementById('VAT_HEADER').style.color = "green";
 					document.getElementById('VAT_NO').style.color = "green";
 				}
 			}
 
 			if (last4digits == "7000") {
-				var expiryElem = document.getElementById('VAT_EXPIRY_DATE')
 				var expiryHead = document.getElementById('VAT_EXPIRY_DATE_HEADING')
-				expiryElem.parentNode.removeChild(expiryElem);
 				expiryHead.parentNode.removeChild(expiryHead);
 			} else {
 				document.getElementById('VAT_EXPIRY_DATE').innerHTML = vat_exp;
@@ -59,31 +60,19 @@ chrome.runtime.onMessage.addListener(function ({
 	document.getElementById('COMPANY_NAME').innerHTML = company;
 	document.getElementById('VAT_NO').innerHTML = vat;
 	document.getElementById('TIN_NO').innerHTML = tin;
-
-
-	var last4digits = vat.slice(vat.length - 4)
-
-	if (last4digits == "7000") {
-		var expiryElem = document.getElementById('VAT_EXPIRY_DATE')
-		var expiryHead = document.getElementById('VAT_EXPIRY_DATE_HEADING')
-		expiryElem.parentNode.removeChild(expiryElem);
-		expiryHead.parentNode.removeChild(expiryHead);
-	} else {
-		document.getElementById('VAT_EXPIRY_DATE').innerHTML = vat_exp;
-	}
-
+	document.getElementById('TYPE').innerHTML = type;
 	document.getElementById('SMS').innerHTML = sms;
 	document.getElementById("copyButton").addEventListener("click", copy);
 
 	function copy() {
 
-
-		var string1 = `COMPANY_NAME: ${company}\nVAT_NO: ${vat}\nTIN_NO: ${tin}\nVAT_EXPIRY_DATE: ${vat_exp}\nSMS: ${sms}`;
-		var string2 = `COMPANY_NAME: ${company}\nVAT_NO: ${vat}\nTIN_NO: ${tin}\nSMS: ${sms}`;
+		var string1 = `${company} \n${type} \nVAT_NO: ${vat}\nTIN_NO: ${tin}\nVAT_EXPIRY_DATE: ${vat_exp}\nSMS: ${sms}`;
+		var string2 = `${company} \n${type} \nVAT_NO: ${vat}\nTIN_NO: ${tin}\nSMS: ${sms}`;
 
 		const ta = document.createElement('textarea');
 		ta.style.cssText = 'opacity:0; position:fixed; width:1px; height:1px; top:0; left:0;';
 
+		var last4digits = vat.slice(vat.length - 4)
 		if (last4digits == "7000") {
 			ta.value = string2;
 		} else {
