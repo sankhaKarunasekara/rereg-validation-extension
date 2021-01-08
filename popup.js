@@ -11,6 +11,10 @@ window.addEventListener('load', function (evt) {
 var isSuspended = false;
 var vat = "";
 var tin = "";
+var type = "";
+var newOrOld = ""
+var completedOrIncomplete = "";
+var activateTill = "";
 var company = "";
 var vat_exp = "";
 var sms = "";
@@ -29,6 +33,7 @@ chrome.runtime.onMessage.addListener(function ({
 	vat_exp = VAT_EXPIRY_DATE;
 	sms = SMS;
 	type = TYPE;
+
 
 	fetch('IRD.json')
 		.then(response => response.json())
@@ -57,17 +62,49 @@ chrome.runtime.onMessage.addListener(function ({
 
 		});
 
+
+	// var optionsOLD_OR_NEW = document.getElementsByName("OLD_OR_NEW");
+	// if (optionsOLD_OR_NEW) {
+	// 	for (var i = 0; i < optionsOLD_OR_NEW.length; i++) {
+	// 		if (optionsOLD_OR_NEW[i].checked) {
+	// 			newOrOld = optionsOLD_OR_NEW[i].value;
+	// 		}
+	// 	}
+	// }
+
+	// var optionsREGISTRATION_STATUS = document.getElementsByName("REGISTRATION_STATUS");
+	// if (optionsREGISTRATION_STATUS) {
+	// 	for (var i = 0; i < options.length; i++) {
+	// 		if (optionsREGISTRATION_STATUS[i].checked) {
+	// 			completedOrIncomplete = options[i].value;
+	// 		}
+	// 	}
+	// }
+
 	document.getElementById('COMPANY_NAME').innerHTML = company;
+	document.getElementById('TYPE').innerHTML = type;
+	document.getElementById('VAT_EXPIRY_DATE').value = vat_exp;
+	document.getElementById('ACTIVATE_TILL_DATE').value = vat_exp;
 	document.getElementById('VAT_NO').innerHTML = vat;
 	document.getElementById('TIN_NO').innerHTML = tin;
-	document.getElementById('TYPE').innerHTML = type;
 	document.getElementById('SMS').innerHTML = sms;
+
+
+
+
 	document.getElementById("copyButton").addEventListener("click", copy);
+
 
 	function copy() {
 
-		var string1 = `${company} \n${type} \nVAT_NO: ${vat}\nTIN_NO: ${tin}\nVAT_EXPIRY_DATE: ${vat_exp}\nSMS: ${sms}`;
-		var string2 = `${company} \n${type} \nVAT_NO: ${vat}\nTIN_NO: ${tin}\nSMS: ${sms}`;
+		completedOrIncomplete = document.getElementById('REGISTRATION_STATUS').value;
+		newOrOld = document.getElementById('OLD_OR_NEW').value;
+		activateTill = document.getElementById('ACTIVATE_TILL_DATE').value;
+
+
+		var string1 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nVAT expiry date: ${vat_exp}\nActivate Till: ${activateTill}\nSMS: ${sms}\n-----`;
+		var string2 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate Till: ${activateTill}\nSMS: ${sms}\n-----`;
+		var string3 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate: NO EXPIRY \nSMS: ${sms}\n-----`;
 
 		const ta = document.createElement('textarea');
 		ta.style.cssText = 'opacity:0; position:fixed; width:1px; height:1px; top:0; left:0;';
@@ -75,6 +112,9 @@ chrome.runtime.onMessage.addListener(function ({
 		var last4digits = vat.slice(vat.length - 4)
 		if (last4digits == "7000") {
 			ta.value = string2;
+			if (activateTill == 0) {
+				ta.value = string3;
+			}
 		} else {
 			ta.value = string1;
 		}
