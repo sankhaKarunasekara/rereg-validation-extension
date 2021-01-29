@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "Extension",
-        "POPUP"
+        "POPUP",
+        "IRD List"
     ]
 }
