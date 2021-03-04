@@ -10,3 +10,8 @@ Scraper with a copy function for the SL Customs Electronic Registration RMU Vali
 ## TODO
 
 Add date and type of the company lines or add a text box for the Remarks.
+
+
+## Chrome webstore link
+
+https://chrome.google.com/webstore/detail/re-registration-validatio/fkpnnofbkmfnibkdcblgbkmlhnbcmjnp
