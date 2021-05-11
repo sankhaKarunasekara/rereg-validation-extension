@@ -100,6 +100,13 @@ chrome.runtime.onMessage.addListener(function ({
 	function copy() {
 
 		completedOrIncomplete = document.getElementById('REGISTRATION_STATUS').value;
+
+		if (completedOrIncomplete == "COMPLETE") {
+			completedOrIncomplete = completedOrIncomplete + "✅"
+		} else {
+			//do nothing
+		}
+
 		newOrOld = document.getElementById('OLD_OR_NEW').value;
 		activateTill = document.getElementById('ACTIVATE_TILL_DATE').value;
 		remarks = document.getElementById('REMARKS').value;
