@@ -12,9 +12,9 @@ Scraper with a copy function for the SL Customs Electronic Registration RMU Vali
 
 ## TODO
 
-- [ ] check mark to indicate completed applications
-- [ ] indicate latest version number in the popup
-- [ ] Add date and type of the company lines or add a text box for the Remarks.
+- [x] check mark to indicate completed applications
+- [x] indicate latest version number in the popup
+- [x] Add date and type of the company lines or add a text box for the Remarks.
 
 
 ## Chrome webstore link
