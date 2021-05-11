@@ -4,12 +4,17 @@ Scraper with a copy function for the SL Customs Electronic Registration RMU Vali
 
 ## What does it do
 
-1. It identifies VAT Numbers deactivated by the IRD
-2. It can esily generate the Whatsapp message we send to TIN/VAT UNIT
+1. It identifies VAT Numbers deactivated by 
+   - RED :IRD Suspended 7000 VATS
+   - GREEN :color indicates 7000 VATs not suspended by IRD
+   - BLACK :usually 2525 VATS
+2. It can easily generate the Whatsapp message we send to TIN/VAT UNIT
 
 ## TODO
 
-Add date and type of the company lines or add a text box for the Remarks.
+- [ ] check mark to indicate completed applications
+- [ ] indicate latest version number in the popup
+- [ ] Add date and type of the company lines or add a text box for the Remarks.
 
 
 ## Chrome webstore link
