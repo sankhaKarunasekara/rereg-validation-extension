@@ -90,9 +90,7 @@ chrome.runtime.onMessage.addListener(function ({
 	document.getElementById('VAT_NO').innerHTML = vat;
 	document.getElementById('TIN_NO').innerHTML = tin;
 	document.getElementById('SMS').innerHTML = sms;
-
-
-
+	document.getElementById('VERSION').innerHTML = "(v" + chrome.app.getDetails().version + ")";
 
 	document.getElementById("copyButton").addEventListener("click", copy);
 	document.getElementById("ACTIVATE_TILL_DATE").addEventListener("change", setFocusToRemarks);
