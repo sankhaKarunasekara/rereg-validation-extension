@@ -18,6 +18,7 @@ var activateTill = "";
 var company = "";
 var vat_exp = "";
 var sms = "";
+var remarks = "";
 
 chrome.runtime.onMessage.addListener(function ({
 	COMPANY_NAME,
@@ -94,18 +95,18 @@ chrome.runtime.onMessage.addListener(function ({
 
 
 	document.getElementById("copyButton").addEventListener("click", copy);
-
+	document.getElementById("ACTIVATE_TILL_DATE").addEventListener("change", setFocusToRemarks);
 
 	function copy() {
 
 		completedOrIncomplete = document.getElementById('REGISTRATION_STATUS').value;
 		newOrOld = document.getElementById('OLD_OR_NEW').value;
 		activateTill = document.getElementById('ACTIVATE_TILL_DATE').value;
+		remarks = document.getElementById('REMARKS').value;
 
-
-		var string1 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nVAT expiry date: ${vat_exp}\nActivate Till: ${activateTill}\nSMS: ${sms}\n-----`;
-		var string2 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate Till: ${activateTill}\nSMS: ${sms}\n-----`;
-		var string3 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate: NO EXPIRY \nSMS: ${sms}\n-----`;
+		var string1 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nVAT expiry date: ${vat_exp}\nActivate Till: ${activateTill}\nSMS: ${sms}\n`;
+		var string2 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate Till: ${activateTill}\nSMS: ${sms}\n`;
+		var string3 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate: NO EXPIRY \nSMS: ${sms}\n`;
 
 		const ta = document.createElement('textarea');
 		ta.style.cssText = 'opacity:0; position:fixed; width:1px; height:1px; top:0; left:0;';
@@ -120,12 +121,22 @@ chrome.runtime.onMessage.addListener(function ({
 			ta.value = string1;
 		}
 
+		if (remarks == "") {
+			ta.value = `${ta.value}-----`
+		} else {
+			ta.value = `${ta.value}\nRemarks:\n${remarks}\n-----`
+		}
+
 		document.body.appendChild(ta);
 		ta.focus();
 		ta.select();
 		document.execCommand('copy');
 		ta.remove();
 		window.close();
+	}
+
+	function setFocusToRemarks() {
+		document.getElementById('REMARKS').focus()
 	}
 
 });
