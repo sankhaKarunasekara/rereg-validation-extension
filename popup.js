@@ -43,6 +43,7 @@ chrome.runtime.onMessage.addListener(function ({
 			var last4digits = vat.slice(vat.length - 4)
 
 			isSuspended = data.SUSPENDED.filter(item => item.TIN == tin).length == 1;
+			debugger;
 			if (isSuspended) {
 				document.getElementById('VAT_NO').style.color = "red";
 				// document.getElementById('VAT_NO').style.backgroundColor = 'red';
