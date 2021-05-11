@@ -100,7 +100,7 @@ chrome.runtime.onMessage.addListener(function ({
 		completedOrIncomplete = document.getElementById('REGISTRATION_STATUS').value;
 
 		if (completedOrIncomplete == "COMPLETE") {
-			completedOrIncomplete = completedOrIncomplete + "✅"
+			completedOrIncomplete = completedOrIncomplete + " ✅"
 		} else {
 			//do nothing
 		}
