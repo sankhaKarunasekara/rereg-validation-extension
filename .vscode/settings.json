@@ -4,5 +4,6 @@
         "POPUP",
         "IRD List",
         "Security"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }
