@@ -150,13 +150,17 @@ chrome.runtime.onMessage.addListener(function ({
 
 	function sendEmail() {
 		var toEmail = email;
-		var subject = `SL CUSTOMS ELECTRONIC REGISTRATION OF M/S. ${company} (TIN: ${tin})`;
+
+		//TODO: encording using encodeURIComponent didn't work, although it converted the text, somehow it converted back to original form in the mail
+		var encodedCompany = company.replaceAll("&", "and");
+
+		var subject = `SL CUSTOMS ELECTRONIC REGISTRATION OF M/S. ${encodedCompany} (TIN: ${tin})`;
 
 		// %0D%0A is the fancy newline charactor <br> or \n does not work
 		var emailBody = `Dear Sir/Madam,
 		%0D%0A
 		%0D%0A
-		This is in relation to the Sri Lanka Customs Electronic Registration profile you created on behalf of the company M/s. ${company} (TIN:${tin}).
+		This is in relation to the Sri Lanka Customs Electronic Registration profile you created on behalf of the company M/s. ${encodedCompany} (TIN:${tin}).
 		%0D%0A 
 		%0D%0A
 		%0D%0A

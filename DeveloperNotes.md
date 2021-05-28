@@ -5,7 +5,9 @@
 
 1. `release-it --no-npm.publish` and follow the steps
 2. download the zip file from github releases
-3. upload the zip to chrome extention dashboard
+3. go to chrome extention dashboard package section
+4. upload the zip to dashboard
+5. submit for review
 
 ## Useful links
 
