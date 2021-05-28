@@ -4,7 +4,7 @@
 ## How to update an extension
 
 1. `release-it --no-npm.publish` and follow the steps
-2. download the zip file from github relases
+2. download the zip file from github releases
 3. upload the zip to chrome extention dashboard
 
 ## Useful links
