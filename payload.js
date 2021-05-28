@@ -57,12 +57,16 @@ function getCompanyDetails() {
         }
     }
 
+    //Email mentioned in the declaration section
+    var EMAIL = document.getElementsByName("DEC_EML_DES")[0].value;
+
     return {
         COMPANY_NAME: COMPANY_NAME,
         TYPE: TYPE,
         VAT_NO: VAT_NO,
         TIN_NO: TIN_NO,
         VAT_EXPIRY_DATE: VAT_EXPIRY_DATE,
-        SMS: SMS
+        SMS: SMS,
+        EMAIL: EMAIL
     }
 }

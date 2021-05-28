@@ -18,6 +18,7 @@ var activateTill = "";
 var company = "";
 var vat_exp = "";
 var sms = "";
+var email = "";
 var remarks = "";
 
 chrome.runtime.onMessage.addListener(function ({
@@ -26,7 +27,8 @@ chrome.runtime.onMessage.addListener(function ({
 	VAT_NO,
 	TIN_NO,
 	VAT_EXPIRY_DATE,
-	SMS }) {
+	SMS,
+	EMAIL }) {
 
 	vat = VAT_NO;
 	tin = TIN_NO;
@@ -34,8 +36,9 @@ chrome.runtime.onMessage.addListener(function ({
 	vat_exp = VAT_EXPIRY_DATE;
 	sms = SMS;
 	type = TYPE;
+	email = EMAIL;
 
-
+	//IRD suspended list
 	fetch('IRD.json')
 		.then(response => response.json())
 		.then(data => {
@@ -93,6 +96,7 @@ chrome.runtime.onMessage.addListener(function ({
 	document.getElementById('VERSION').innerHTML = "(v" + chrome.app.getDetails().version + ")";
 
 	document.getElementById("copyButton").addEventListener("click", copy);
+	document.getElementById("sendEmailButton").addEventListener("click", sendEmail);
 	document.getElementById("ACTIVATE_TILL_DATE").addEventListener("change", setFocusToRemarks);
 
 	function copy() {
@@ -142,6 +146,26 @@ chrome.runtime.onMessage.addListener(function ({
 
 	function setFocusToRemarks() {
 		document.getElementById('REMARKS').focus()
+	}
+
+	function sendEmail() {
+		var toEmail = email;
+		var subject = `SL CUSTOMS ELECTRONIC REGISTRATION OF M/S. ${company} (TIN: ${tin})`;
+
+		// %0D%0A is the fancy newline charactor <br> or \n does not work
+		var emailBody = `Dear Sir/Madam,
+		%0D%0A
+		%0D%0A
+		This is in relation to the Sri Lanka Customs Electronic Registration profile you created on behalf of the company M/s. ${company} (TIN:${tin}).
+		%0D%0A 
+		%0D%0A
+		%0D%0A
+		%0D%0A
+		%0D%0A
+		%0D%0A
+		Best Regards,`;
+
+		document.location = `mailto: ${toEmail}?subject=${subject}&body=${emailBody}`;
 	}
 
 });
