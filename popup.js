@@ -104,7 +104,7 @@ chrome.runtime.onMessage.addListener(function ({
 		completedOrIncomplete = document.getElementById('REGISTRATION_STATUS').value;
 
 		if (completedOrIncomplete == "COMPLETE") {
-			completedOrIncomplete = completedOrIncomplete + " ✅"
+			completedOrIncomplete = `*${completedOrIncomplete}* ✅`
 		} else {
 			//do nothing
 		}
@@ -162,11 +162,6 @@ chrome.runtime.onMessage.addListener(function ({
 		%0D%0A
 		This is in relation to the Sri Lanka Customs Electronic Registration profile you created on behalf of the company M/s. ${encodedCompany} (TIN:${tin}).
 		%0D%0A 
-		%0D%0A
-		%0D%0A
-		%0D%0A
-		%0D%0A
-		%0D%0A
 		Best Regards,`;
 
 		document.location = `mailto: ${toEmail}?subject=${subject}&body=${emailBody}`;
