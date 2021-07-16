@@ -20,6 +20,7 @@ var vat_exp = "";
 var sms = "";
 var email = "";
 var remarks = "";
+var vatWithError = "";
 
 chrome.runtime.onMessage.addListener(function ({
 	COMPANY_NAME,
@@ -37,6 +38,34 @@ chrome.runtime.onMessage.addListener(function ({
 	sms = SMS;
 	type = TYPE;
 	email = EMAIL;
+
+
+	var digit13Vat = vat.replace(/[^0-9]/g, '');
+	console.log()
+
+	//verify VAT is a old vat number in the asycuda system
+	fetch("https://ereg.customs.gov.lk/registrations/trader/checkExpStatus", {
+		"headers": {
+			"accept": "application/json, text/javascript, */*; q=0.01",
+			"accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+			"content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+			"x-requested-with": "XMLHttpRequest"
+		},
+		"body": `expStatusTIN=${digit13Vat}&expStatusType=compImEx&submitMode=ajax`,
+		"method": "POST",
+		"mode": "cors",
+	}).then(r => r.json()).then(result => {
+		// Result now contains the response text, do what you want...
+		console.log(digit13Vat)
+		const verifiedTIN = verifyTIN(result, digit13Vat)
+		if (verifiedTIN == false) {
+			vatWithError = vat + " 🚩 (PLEASE VERIFY THE VAT)";
+			document.getElementById('VAT_NO').innerHTML = vat + " 🚩 (PLEASE VERIFY THE VAT)";
+		} else {
+			vatWithError = vat;
+			document.getElementById('VAT_NO').innerHTML = vat;
+		}
+	});
 
 	//IRD suspended list
 	fetch('IRD.json')
@@ -90,7 +119,9 @@ chrome.runtime.onMessage.addListener(function ({
 	document.getElementById('TYPE').innerHTML = type;
 	document.getElementById('VAT_EXPIRY_DATE').value = vat_exp;
 	document.getElementById('ACTIVATE_TILL_DATE').value = vat_exp;
-	document.getElementById('VAT_NO').innerHTML = vat;
+
+	//if VAT is not in the systems
+
 	document.getElementById('TIN_NO').innerHTML = tin;
 	document.getElementById('SMS').innerHTML = sms;
 	document.getElementById('VERSION').innerHTML = "(v" + chrome.app.getDetails().version + ")";
@@ -113,9 +144,9 @@ chrome.runtime.onMessage.addListener(function ({
 		activateTill = document.getElementById('ACTIVATE_TILL_DATE').value;
 		remarks = document.getElementById('REMARKS').value;
 
-		var string1 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nVAT expiry date: ${vat_exp}\nActivate Till: ${activateTill}\nSMS: ${sms}\n`;
-		var string2 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate Till: ${activateTill}\nSMS: ${sms}\n`;
-		var string3 = `-----\n${type} [${newOrOld}]\n${vat}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate: NO EXPIRY \nSMS: ${sms}\n`;
+		var string1 = `-----\n${type}[${newOrOld}]\n${vatWithError}\n${company}\n\nRegistration: ${completedOrIncomplete}\nVAT expiry date: ${vat_exp}\nActivate Till: ${activateTill}\nSMS: ${sms}\n`;
+		var string2 = `-----\n${type}[${newOrOld}]\n${vatWithError}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate Till: ${activateTill}\nSMS: ${sms}\n`;
+		var string3 = `-----\n${type}[${newOrOld}]\n${vatWithError}\n${company}\n\nRegistration: ${completedOrIncomplete}\nActivate: NO EXPIRY \nSMS: ${sms}\n`;
 
 		const ta = document.createElement('textarea');
 		ta.style.cssText = 'opacity:0; position:fixed; width:1px; height:1px; top:0; left:0;';
@@ -131,9 +162,9 @@ chrome.runtime.onMessage.addListener(function ({
 		}
 
 		if (remarks == "") {
-			ta.value = `${ta.value}-----`
+			ta.value = `${ta.value}----- `
 		} else {
-			ta.value = `${ta.value}\nRemarks:\n${remarks}\n-----`
+			ta.value = `${ta.value}\nRemarks: \n${remarks}\n----- `
 		}
 
 		document.body.appendChild(ta);
@@ -154,17 +185,31 @@ chrome.runtime.onMessage.addListener(function ({
 		//TODO: encording using encodeURIComponent didn't work, although it converted the text, somehow it converted back to original form in the mail
 		var encodedCompany = company.replaceAll("&", "and");
 
-		var subject = `SL CUSTOMS ELECTRONIC REGISTRATION OF M/S. ${encodedCompany} (TIN: ${tin})`;
+		var subject = `SL CUSTOMS ELECTRONIC REGISTRATION OF M / S.${encodedCompany}(TIN: ${tin})`;
 
 		// %0D%0A is the fancy newline charactor <br> or \n does not work
-		var emailBody = `Dear Sir/Madam,
-		%0D%0A
-		%0D%0A
-		This is in relation to the Sri Lanka Customs Electronic Registration profile you created on behalf of the company M/s. ${encodedCompany} (TIN:${tin}).
-		%0D%0A 
-		Best Regards,`;
+		var emailBody = `Dear Sir / Madam,
+		% 0D % 0A
+	% 0D % 0A
+		This is in relation to the Sri Lanka Customs Electronic Registration profile you created on behalf of the company M / s.${encodedCompany}(TIN: ${tin}).
+		% 0D % 0A 
+		Best Regards, `;
 
-		document.location = `mailto: ${toEmail}?subject=${subject}&body=${emailBody}`;
+		document.location = `mailto: ${toEmail} ? subject = ${subject} & body=${emailBody}`;
+	}
+
+	function verifyTIN(result, onlyNumbersVat) {
+		console.log(result)
+		if (result.status == "error") {
+			return false;
+		} else if (result.status == "success1") {
+			const isVerified = result.data.reduce(function (isVeri, vatStrings) {
+				return isVeri || vatStrings.CMP_COD.substring(0, 13).includes(onlyNumbersVat);
+			});
+			return isVerified;
+		} else {
+			return false;
+		}
 	}
 
 });

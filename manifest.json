@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Re Registration Validation Extension",
 	"description": "Scraper with a copy function for the SL Customs Electronic Registration, RMU Validation",
-	"version": "1.5.5",
+	"version": "1.6.0",
 	"author": "@sankhaKarunasekara",
 	"background": {
 		"scripts": [
@@ -12,7 +12,8 @@
 	},
 	"permissions": [
 		"*://www.customs.gov.lk/registrations/adminApplicationView/*",
-		"*://customs.gov.lk/registrations/adminApplicationView/*"
+		"*://customs.gov.lk/registrations/adminApplicationView/*",
+		"*://ereg.customs.gov.lk/registrations/adminApplicationView/*"
 	],
 	"browser_action": {
 		"default_icon": "icon.png",
