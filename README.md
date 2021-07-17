@@ -2,6 +2,10 @@
 
 Scraper with a copy function for the SL Customs Electronic Registration RMU Validation
 
+## Chrome webstore link
+
+click [here](https://chrome.google.com/webstore/detail/re-registration-validatio/fkpnnofbkmfnibkdcblgbkmlhnbcmjnp) get the extention from the Chrome Web Store.
+
 ## What does it do
 
 1. SUSPENDED VAT INDICATOR: It shows VAT Numbers in  
@@ -15,6 +19,8 @@ Scraper with a copy function for the SL Customs Electronic Registration RMU Vali
    - `body` : ```Dear Sir/Madam,
          This is in relation to the Sri Lanka Customs Electronic Registration profile you created on behalf of the company M/s. ${company} (TIN:${tin}).
          Best Regards,```
+
+4. *(NEW)* VALIDATING VAT FEATURE: Display a red flag when VAT number cannot be validated through ASYCUDA data feeded in to e-reg system. Extention will automatically send a request to server with the user entered tin number and get the response is to whether it's a valid TIN number from the data from asycuda that were already feeded in to e-registration system. If it's not, extention will display a red flag 🚩 in front of the VAT number field. Extention will also check whether right form of the VAT number (2525 or 7000) is entered by the user. If user has entered new type of a vat number( Ex: 2525 for 7000) which is not in the asycuda system yet, extention will show the same red flag 🚩.
 
 ## How to use Set Up Your Computer to use Send Email Feature
 
@@ -34,8 +40,3 @@ Scraper with a copy function for the SL Customs Electronic Registration RMU Vali
 - [x] check mark to indicate completed applications
 - [x] indicate latest version number in the popup
 - [x] Add date and type of the company lines or add a text box for the Remarks.
-- [ ] Automatically generated ending for the email with expiry date set by the officer.
-
-## Chrome webstore link
-
-click [here](https://chrome.google.com/webstore/detail/re-registration-validatio/fkpnnofbkmfnibkdcblgbkmlhnbcmjnp) get the extention from the Chrome Web Store. 

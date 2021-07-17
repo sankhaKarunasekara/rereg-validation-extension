@@ -39,9 +39,11 @@ chrome.runtime.onMessage.addListener(function ({
 	type = TYPE;
 	email = EMAIL;
 
+	//set the version on display
+	document.getElementById('VERSION').innerHTML = "(v" + chrome.app.getDetails().version + ")";
 
 	var digit13Vat = vat.replace(/[^0-9]/g, '');
-	console.log()
+
 
 	//verify VAT is a old vat number in the asycuda system
 	fetch("https://ereg.customs.gov.lk/registrations/trader/checkExpStatus", {
@@ -56,7 +58,7 @@ chrome.runtime.onMessage.addListener(function ({
 		"mode": "cors",
 	}).then(r => r.json()).then(result => {
 		// Result now contains the response text, do what you want...
-		console.log(digit13Vat)
+
 		const verifiedTIN = verifyTIN(result, digit13Vat)
 		if (verifiedTIN == false) {
 			vatWithError = vat + " 🚩 (PLEASE VERIFY THE VAT)";
@@ -124,7 +126,6 @@ chrome.runtime.onMessage.addListener(function ({
 
 	document.getElementById('TIN_NO').innerHTML = tin;
 	document.getElementById('SMS').innerHTML = sms;
-	document.getElementById('VERSION').innerHTML = "(v" + chrome.app.getDetails().version + ")";
 
 	document.getElementById("copyButton").addEventListener("click", copy);
 	document.getElementById("sendEmailButton").addEventListener("click", sendEmail);
@@ -199,7 +200,7 @@ chrome.runtime.onMessage.addListener(function ({
 	}
 
 	function verifyTIN(result, onlyNumbersVat) {
-		console.log(result)
+
 		if (result.status == "error") {
 			return false;
 		} else if (result.status == "success1") {

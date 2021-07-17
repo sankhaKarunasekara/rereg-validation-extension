@@ -3,7 +3,8 @@
         "Extension",
         "POPUP",
         "IRD List",
-        "Security"
+        "Security",
+        "ReadMe"
     ],
     "git.ignoreLimitWarning": true
 }

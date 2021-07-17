@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "Re Registration Validation Extension",
-	"description": "Scraper with a copy function for the SL Customs Electronic Registration, RMU Validation",
-	"version": "1.6.0",
+	"description": "Scraper with a copy function for the SL Customs Electronic Registration",
+	"version": "1.6.1",
 	"author": "@sankhaKarunasekara",
 	"background": {
 		"scripts": [
